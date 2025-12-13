@@ -20,9 +20,9 @@ export default function Login() {
       <form
         onSubmit={loginUser}
         className="p-8 bg-white rounded-3xl shadow-2xl w-80 mx-auto mt-20 font-poppins
-                   border-2 border-gray-300 transition-all duration-500 hover:scale-105 hover:border-black"
+                   border-2 border-gray-300 transition-all duration-500 hover:scale-105 hover:border-pink-500"
       >
-        <h2 className="text-amber-950 text-3xl mb-6 font-semibold">Who Are U 🙂</h2>
+        <h2 className="text-black text-3xl mb-6 font-semibold">Who Are U 🙂</h2>
 
         <input
           type="email"

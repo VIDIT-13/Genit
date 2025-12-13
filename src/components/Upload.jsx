@@ -2,8 +2,8 @@ import { useState } from "react";
 import { db, auth } from "../firebase/firebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
-const CLOUD_NAME = "doahhnkqm";     // Your Cloudinary cloud name
-const UPLOAD_PRESET = "Memories";    // Your unsigned upload preset
+const CLOUD_NAME = "doahhnkqm";
+const UPLOAD_PRESET = "Memories";
 
 export default function Upload() {
   const [file, setFile] = useState(null);
@@ -12,7 +12,6 @@ export default function Upload() {
   const handleUpload = async () => {
     if (!file) return alert("Please select a file");
 
-    // 🔒 Max 100MB for both images and videos
     if (file.size > 100 * 1024 * 1024) {
       return alert("File too large (max 100MB)");
     }
@@ -34,7 +33,6 @@ export default function Upload() {
 
       const data = await res.json();
 
-      // Save metadata to Firestore
       await addDoc(collection(db, "uploads"), {
         url: data.secure_url,
         type: file.type,
@@ -42,6 +40,7 @@ export default function Upload() {
         uid: auth.currentUser.uid,
         createdAt: serverTimestamp(),
       });
+
       setFile(null);
     } catch (err) {
       alert("Upload failed");
@@ -52,22 +51,59 @@ export default function Upload() {
   };
 
   return (
-    <div className="flex justify-center mt-6">
-      <div className="bg-white p-4 rounded-xl shadow flex gap-3">
-        <input
-          type="file"
-          accept="image/*,video/*"
-          onChange={(e) => setFile(e.target.files[0])}
-        />
+    <div className="min-h-screen bg-black flex justify-center items-start pt-12 px-4">
+      <div
+        className="w-full max-w-md bg-black text-white rounded-3xl p-6
+                   border border-gray-700 shadow-lg
+                   transition-all duration-500
+                   hover:scale-[1.03] hover:border-purple-500 hover:shadow-purple-500/20"
+      >
+        {/* Title */}
+        <h2 className="text-2xl font-semibold mb-6 text-center tracking-wide">
+          Upload Moments
+        </h2>
 
+        {/* File picker */}
+        <label
+          className="flex flex-col items-center justify-center w-full h-40
+                     border-2 border-dashed border-gray-600 rounded-2xl
+                     cursor-pointer
+                     transition-all duration-500
+                     hover:border-purple-500 hover:bg-purple-500/10"
+        >
+          <input
+            type="file"
+            accept="image/*,video/*"
+            className="hidden"
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+
+          {!file ? (
+            <div className="text-gray-300 text-center transition-all duration-300">
+              <p className="text-lg">Click to upload</p>
+              <p className="text-sm mt-1 opacity-80">
+                Just GenZ and Allen
+              </p>
+            </div>
+          ) : (
+            <div className="text-center text-purple-300">
+              <p className="font-medium">Selected file:</p>
+              <p className="text-sm mt-1 break-all">{file.name}</p>
+            </div>
+          )}
+        </label>
+
+        {/* Upload button */}
         <button
           onClick={handleUpload}
           disabled={uploading}
-          className={`px-4 py-2 rounded text-white ${
-            uploading
-              ? "bg-gray-400"
-              : "bg-purple-600 hover:bg-purple-700"
-          }`}
+          className={`mt-6 w-full py-3 rounded-xl text-lg font-medium
+            transition-all duration-500
+            ${
+              uploading
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-white text-black hover:bg-purple-600 hover:text-white hover:scale-[1.05]"
+            }`}
         >
           {uploading ? "Uploading..." : "Upload"}
         </button>

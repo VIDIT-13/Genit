@@ -41,6 +41,7 @@ export default function App() {
     <div className="relative min-h-screen">
       {/* Background div */}
       <div className="absolute top-0 left-0 w-full h-full bg-black"></div>
+      
 
       {/* Splash Cursor */}
       <SplashCursor />
