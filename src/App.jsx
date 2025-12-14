@@ -12,8 +12,8 @@ import BlurText from "./ReactBits/BlurText";
 export default function App() {
   const [user, setUser] = useState(null);
   const handleAnimationComplete = () => {
-  console.log('Animation completed!');
-};
+    console.log("Animation completed!");
+  };
 
   useEffect(() => {
     return onAuthStateChanged(auth, (currentUser) => {
@@ -44,7 +44,6 @@ export default function App() {
     <div className="relative min-h-screen">
       {/* Background div */}
       <div className="absolute top-0 left-0 w-full h-full bg-black"></div>
-      
 
       {/* Splash Cursor */}
       <SplashCursor />
@@ -54,19 +53,31 @@ export default function App() {
         <div className="flex justify-between items-center p-4 bg-black shadow ">
           <div>
             <BlurText
-  text="JanashVidit"
-  delay={150}
-  animateBy="letters"
-  direction="top"
-  onAnimationComplete={handleAnimationComplete}
-  className="text-2xl mb-8"
-/>
+              text="JanashVidit"
+              delay={150}
+              animateBy="letters"
+              direction="top"
+              onAnimationComplete={handleAnimationComplete}
+              className="text-2xl "
+            />
           </div>
           <button
             onClick={() => signOut(auth)}
-            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+            className="
+    bg-red-500 text-black
+    px-3 py-0 rounded-3xl
+    hover:bg-white 
+    transition
+  "
           >
-            Logout
+            <BlurText
+              text="Logout"
+              delay={150}
+              animateBy="letters"
+              direction="top"
+              onAnimationComplete={handleAnimationComplete}
+              className="text-1xl m-0.5 "
+            />
           </button>
         </div>
 
