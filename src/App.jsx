@@ -8,6 +8,7 @@ import Gallery from "./components/Gallery";
 
 import SplashCursor from "./ReactBits/SplashCursor";
 import BlurText from "./ReactBits/BlurText";
+import GradientBlinds from "./ReactBits/GradientBlinds.jsx";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -21,46 +22,60 @@ export default function App() {
     });
   }, []);
 
-  // 🔒 Full-screen black background + Login
+  /* ================= LOGIN SCREEN ================= */
+
   if (!user) {
     return (
-      <div className="relative w-full h-screen">
-        {/* Background div */}
-        <div className="absolute top-0 left-0 w-full h-full bg-black"></div>
+      <div className="relative w-full h-screen overflow-hidden bg-black">
+        {/* Gradient Background (LOGIN ONLY) */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <GradientBlinds
+            gradientColors={["#FF9FFC", "#5227FF"]}
+            angle={0}
+            noise={0.3}
+            blindCount={12}
+            blindMinWidth={50}
+            spotlightRadius={0.5}
+            spotlightSoftness={1}
+            spotlightOpacity={1}
+            mouseDampening={0.15}
+            distortAmount={0}
+            shineDirection="left"
+            mixBlendMode="lighten"
+          />
+        </div>
 
-        {/* Splash Cursor */}
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/70 z-10 pointer-events-none" />
+
         <SplashCursor />
 
-        {/* Login form on top */}
-        <div className="relative z-10 flex items-center justify-center w-full h-full">
+        {/* Login Form */}
+        <div className="relative z-20 flex items-center justify-center w-full h-full">
           <Login />
         </div>
       </div>
     );
   }
 
-  // ✅ Logged-in app with full-screen black background
-  return (
-    <div className="relative min-h-screen">
-      {/* Background div */}
-      <div className="absolute top-0 left-0 w-full h-full bg-black"></div>
+  /* ================= LOGGED-IN APP (NO GRADIENT) ================= */
 
-      {/* Splash Cursor */}
+  return (
+    <div className="relative min-h-screen bg-black overflow-hidden">
       <SplashCursor />
 
-      {/* Main app content */}
-      <div className="relative z-10 min-h-screen bg-black text-white pb-12 border-b-8 border-amber-300">
-        <div className="flex justify-between items-center p-4 bg-black shadow ">
-          <div>
-            <BlurText
-              text="JanashVidit"
-              delay={150}
-              animateBy="letters"
-              direction="top"
-              onAnimationComplete={handleAnimationComplete}
-              className="text-2xl "
-            />
-          </div>
+      {/* App Content */}
+      <div className="relative z-10 min-h-screen text-white pb-12 border-b-8 border-amber-300">
+        {/* Header */}
+        <div className="flex justify-between items-center p-4">
+          <BlurText
+            text="JanashVidit"
+            delay={150}
+            animateBy="letters"
+            direction="top"
+            className="text-2xl"
+          />
+
           <button
             onClick={() => signOut(auth)}
             className="
