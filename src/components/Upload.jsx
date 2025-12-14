@@ -51,7 +51,7 @@ export default function Upload() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex justify-center items-start pt-12 px-4">
+    <div className="h-96 border-8 border-amber-100 bg-black flex justify-center items-start pt-12 px-4">
       <div
         className="w-full max-w-md bg-black text-white rounded-3xl p-6
                    border border-gray-700 shadow-lg
@@ -59,12 +59,17 @@ export default function Upload() {
                    hover:scale-[1.03] hover:border-purple-500 hover:shadow-purple-500/20"
       >
         {/* Title */}
-        <h2 className="text-2xl font-semibold mb-6 text-center tracking-wide">
-          Upload Moments
+        <h2 className="text-2xl  mb-6 text-center tracking-wide">
+          Here Resides Memories
         </h2>
 
-        {/* File picker */}
+        {/* File picker with Drag & Drop */}
         <label
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={(e) => {
+            e.preventDefault();
+            setFile(e.dataTransfer.files[0]);
+          }}
           className="flex flex-col items-center justify-center w-full h-40
                      border-2 border-dashed border-gray-600 rounded-2xl
                      cursor-pointer
@@ -79,8 +84,8 @@ export default function Upload() {
           />
 
           {!file ? (
-            <div className="text-gray-300 text-center transition-all duration-300">
-              <p className="text-lg">Click to upload</p>
+            <div className="text-gray-300 text-center">
+              <p className="text-lg">Click or drag & drop</p>
               <p className="text-sm mt-1 opacity-80">
                 Just GenZ and Allen
               </p>

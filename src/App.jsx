@@ -7,10 +7,13 @@ import Upload from "./components/Upload";
 import Gallery from "./components/Gallery";
 
 import SplashCursor from "./ReactBits/SplashCursor";
-
+import BlurText from "./ReactBits/BlurText";
 
 export default function App() {
   const [user, setUser] = useState(null);
+  const handleAnimationComplete = () => {
+  console.log('Animation completed!');
+};
 
   useEffect(() => {
     return onAuthStateChanged(auth, (currentUser) => {
@@ -47,9 +50,18 @@ export default function App() {
       <SplashCursor />
 
       {/* Main app content */}
-      <div className="relative z-10 min-h-screen bg-gray-100">
-        <div className="flex justify-between items-center p-4 bg-white shadow">
-          <h1 className="font-bold text-lg">Media Gallery</h1>
+      <div className="relative z-10 min-h-screen bg-black text-white pb-12 border-b-8 border-amber-300">
+        <div className="flex justify-between items-center p-4 bg-black shadow ">
+          <div>
+            <BlurText
+  text="JanashVidit"
+  delay={150}
+  animateBy="letters"
+  direction="top"
+  onAnimationComplete={handleAnimationComplete}
+  className="text-2xl mb-8"
+/>
+          </div>
           <button
             onClick={() => signOut(auth)}
             className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
