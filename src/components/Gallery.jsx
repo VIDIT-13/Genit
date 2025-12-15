@@ -17,7 +17,9 @@ import gsap from "gsap";
 export default function Gallery() {
   const [uploads, setUploads] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+
   const itemRefs = useRef([]);
+  const videoRef = useRef(null); // 👈 important
 
   useEffect(() => {
     const q = query(collection(db, "uploads"), orderBy("createdAt", "desc"));
@@ -33,19 +35,20 @@ export default function Gallery() {
     return () => unsubscribe();
   }, []);
 
-  // GSAP animation on items load
+  // GSAP animation
   useEffect(() => {
     if (!itemRefs.current.length) return;
 
     gsap.fromTo(
       itemRefs.current,
-      { opacity: 0, y: 30 },
+      { opacity: 0, y: 20 },
       {
         opacity: 1,
         y: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        stagger: 0.08,
+        duration: 0.5,
+        stagger: 0.06,
+        ease: "power2.out",
+        overwrite: true,
       }
     );
   }, [uploads]);
@@ -56,9 +59,24 @@ export default function Gallery() {
     }
   };
 
+  // ✅ Close fullscreen properly
+  const closePreview = () => {
+    // Pause video
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+
+    // Exit fullscreen (mobile fix)
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+
+    setSelectedItem(null);
+  };
+
   return (
     <>
-      {/* Masonry Grid */}
+      {/* Gallery */}
       <Box className="p-4">
         <Masonry columns={{ xs: 2, sm: 3, md: 4 }} spacing={2}>
           {uploads.map((item, index) => (
@@ -79,6 +97,7 @@ export default function Gallery() {
                 <video
                   src={item.url}
                   muted
+                  playsInline
                   className="w-full h-auto object-cover"
                 />
               )}
@@ -89,14 +108,9 @@ export default function Gallery() {
                   e.stopPropagation();
                   handleDelete(item.id);
                 }}
-                className="
-                  absolute top-2 right-2
-                  bg-red-500/20 backdrop-blur-sm
-                  text-white text-xs px-2 py-1
-                  rounded-full
-                  hover:bg-red-500
-                  transition z-10
-                "
+                className="absolute top-2 right-2 bg-red-500/20 backdrop-blur-sm
+                           text-white text-xs px-2 py-1 rounded-full
+                           hover:bg-red-500 transition z-10"
               >
                 Delete
               </button>
@@ -105,15 +119,19 @@ export default function Gallery() {
         </Masonry>
       </Box>
 
-      {/* Fullscreen Preview */}
+      {/* Fullscreen Modal */}
       {selectedItem && (
         <div
           className="fixed inset-0 bg-black/90 flex items-center justify-center z-50"
-          onClick={() => setSelectedItem(null)}
+          onClick={closePreview}
         >
+          {/* ❌ Close Button */}
           <button
-            className="absolute top-6 right-6 text-white text-3xl font-bold"
-            onClick={() => setSelectedItem(null)}
+            onClick={(e) => {
+              e.stopPropagation();
+              closePreview();
+            }}
+            className="absolute top-6 right-6 text-white text-3xl font-bold z-50"
           >
             ✕
           </button>
@@ -130,9 +148,11 @@ export default function Gallery() {
               />
             ) : (
               <video
+                ref={videoRef}  // 👈 important
                 src={selectedItem.url}
                 controls
                 autoPlay
+                playsInline
                 className="w-full max-h-[90vh] rounded-xl"
               />
             )}
