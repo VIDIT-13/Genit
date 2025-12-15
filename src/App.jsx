@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { auth } from "./firebase/firebaseConfig";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import { Analytics } from "@vercel/analytics/react";
 
 import Login from "./components/Login";
 import Upload from "./components/Upload";
@@ -82,6 +83,7 @@ export default function App() {
         <div className="relative z-20 flex items-center justify-center w-full h-full">
           <Login />
         </div>
+        <Analytics /> 
       </div>
     );
   }
