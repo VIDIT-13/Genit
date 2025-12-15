@@ -8,7 +8,9 @@ import Gallery from "./components/Gallery";
 
 import SplashCursor from "./ReactBits/SplashCursor";
 import BlurText from "./ReactBits/BlurText";
-import GradientBlinds from "./ReactBits/GradientBlinds.jsx";
+
+import Lightning from "./ReactBits/Lightning.jsx";
+
 
 function MenuDropdown() {
   const [open, setOpen] = useState(false);
@@ -62,20 +64,13 @@ export default function App() {
       <div className="relative w-full h-screen overflow-hidden bg-black">
         {/* Gradient Background (LOGIN ONLY) */}
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <GradientBlinds
-            gradientColors={["#FF9FFC", "#5227FF"]}
-            angle={0}
-            noise={0.3}
-            blindCount={12}
-            blindMinWidth={50}
-            spotlightRadius={0.5}
-            spotlightSoftness={1}
-            spotlightOpacity={1}
-            mouseDampening={0.15}
-            distortAmount={0}
-            shineDirection="left"
-            mixBlendMode="lighten"
-          />
+          <Lightning
+    hue={220}
+    xOffset={0}
+    speed={1}
+    intensity={1}
+    size={1}
+  />
         </div>
 
         {/* Dark overlay */}
@@ -126,7 +121,7 @@ export default function App() {
               animateBy="letters"
               direction="top"
               onAnimationComplete={handleAnimationComplete}
-              className="text-1xl m-0.5 "
+              className="text-1.5xl m-0.5 "
             />
           </button>
         </div>
