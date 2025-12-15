@@ -59,14 +59,20 @@ export default function Gallery() {
             )}
 
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDelete(item.id);
-              }}
-              className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 z-10"
-            >
-              Delete
-            </button>
+  onClick={(e) => {
+    e.stopPropagation();
+    handleDelete(item.id);
+  }}
+  className="absolute top-2 right-2 
+             bg-red-500/20 backdrop-blur-sm
+             text-white text-xs px-2 py-1 
+             rounded-full 
+             hover:bg-red-500 hover:text-white
+             transition z-10"
+>
+  Delete
+</button>
+
           </div>
         ))}
       </div>

@@ -10,6 +10,39 @@ import SplashCursor from "./ReactBits/SplashCursor";
 import BlurText from "./ReactBits/BlurText";
 import GradientBlinds from "./ReactBits/GradientBlinds.jsx";
 
+function MenuDropdown() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="relative">
+      {/* 3-bar button */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex flex-col gap-1 px-3 py-2"
+      >
+        <span className="w-6 h-0.5 bg-white"></span>
+        <span className="w-6 h-0.5 bg-white"></span>
+        <span className="w-6 h-0.5 bg-white"></span>
+      </button>
+
+      {/* Dropdown */}
+      {open && (
+        <div className="absolute left-0 mt-3 w-40 bg-black border border-white/20 rounded-xl shadow-lg overflow-hidden z-50">
+          {["Gallery", "Upload", "Notes", "Timeline"].map((item) => (
+            <button
+              key={item}
+              className="w-full text-left px-4 py-2 text-sm text-white hover:bg-white hover:text-black transition"
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 export default function App() {
   const [user, setUser] = useState(null);
   const handleAnimationComplete = () => {
@@ -75,6 +108,8 @@ export default function App() {
             direction="top"
             className="text-2xl"
           />
+
+          
 
           <button
             onClick={() => signOut(auth)}
