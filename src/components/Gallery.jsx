@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { db } from "../firebase/firebaseConfig";
 import {
   collection,
@@ -12,9 +12,12 @@ import {
 import Masonry from "@mui/lab/Masonry";
 import Box from "@mui/material/Box";
 
+import gsap from "gsap";
+
 export default function Gallery() {
   const [uploads, setUploads] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  const itemRefs = useRef([]);
 
   useEffect(() => {
     const q = query(collection(db, "uploads"), orderBy("createdAt", "desc"));
@@ -30,6 +33,23 @@ export default function Gallery() {
     return () => unsubscribe();
   }, []);
 
+  // GSAP animation on items load
+  useEffect(() => {
+    if (!itemRefs.current.length) return;
+
+    gsap.fromTo(
+      itemRefs.current,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        stagger: 0.08,
+      }
+    );
+  }, [uploads]);
+
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this file?")) {
       await deleteDoc(doc(db, "uploads", id));
@@ -40,13 +60,11 @@ export default function Gallery() {
     <>
       {/* Masonry Grid */}
       <Box className="p-4">
-        <Masonry
-          columns={{ xs: 2, sm: 3, md: 4 }}
-          spacing={2}
-        >
-          {uploads.map((item) => (
+        <Masonry columns={{ xs: 2, sm: 3, md: 4 }} spacing={2}>
+          {uploads.map((item, index) => (
             <Box
               key={item.id}
+              ref={(el) => (itemRefs.current[index] = el)}
               className="relative rounded-2xl overflow-hidden cursor-pointer bg-black"
               onClick={() => setSelectedItem(item)}
             >
@@ -54,14 +72,14 @@ export default function Gallery() {
                 <img
                   src={item.url}
                   alt="upload"
-                  className="w-full h-full object-cover hover:scale-105 transition duration-300"
                   loading="lazy"
+                  className="w-full h-auto object-cover"
                 />
               ) : (
                 <video
                   src={item.url}
                   muted
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto object-cover"
                 />
               )}
 
