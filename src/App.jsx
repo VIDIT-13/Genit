@@ -67,7 +67,7 @@ export default function App() {
         <div className="absolute inset-0 z-0 pointer-events-none">
           <PrismaticBurst
     animationType="rotate3d"
-    intensity={2}
+    intensity={5}
     speed={0.5}
     distort={1.0}
     paused={false}
