@@ -10,8 +10,8 @@ import Gallery from "./components/Gallery";
 import SplashCursor from "./ReactBits/SplashCursor";
 import BlurText from "./ReactBits/BlurText";
 
-import Lightning from "./ReactBits/Lightning.jsx";
 
+import PrismaticBurst from "./ReactBits/PrismaticBurst.jsx";
 
 function MenuDropdown() {
   const [open, setOpen] = useState(false);
@@ -65,12 +65,17 @@ export default function App() {
       <div className="relative w-full h-screen overflow-hidden bg-black">
         {/* Gradient Background (LOGIN ONLY) */}
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <Lightning
-    hue={220}
-    xOffset={0}
-    speed={1}
-    intensity={1}
-    size={1}
+          <PrismaticBurst
+    animationType="rotate3d"
+    intensity={2}
+    speed={0.5}
+    distort={1.0}
+    paused={false}
+    offset={{ x: 0, y: 0 }}
+    hoverDampness={0.25}
+    rayCount={24}
+    mixBlendMode="lighten"
+    colors={['#ff007a', '#4d3dff', '#ffffff']}
   />
         </div>
 
